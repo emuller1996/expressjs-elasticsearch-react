@@ -11,13 +11,17 @@ PersonasRouters.get("/", async (req, res) => {
 
   const ql = {};
   if (req.query.q) ql.q = req.query.q;
-
+  const  { size, page}  = req.query;
   try {
     const searchResult = await client.search({
       index: "personas",
-      pretty: true,
-      ...ql,
+      size:size,
+      from:((page-1)*size),
+      query: {
+        match_all: {},
+      },
     });
+    console.log(searchResult);
     const data = searchResult.hits.hits.map((i) => {
       return { ...i._source, id: i._id };
     });
@@ -32,7 +36,6 @@ PersonasRouters.get("/:id", async (req, res) => {
   try {
     const searchResult = await client.search({
       index: "personas",
-      pretty: true,
       query: { match: { _id: req.params.id } },
     });
     console.log(searchResult);
