@@ -6,7 +6,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import routes from "./routes/index.js";
 
-
 dotenv.config();
 const server = express();
 
@@ -16,10 +15,9 @@ server.use(bodyParser.json({ limit: "50mb" }));
 server.use(cookieParser());
 server.use(morgan("dev"));
 
+
 server.use("/", routes);
 
 // Error catching endware.
-
-
 
 export default server;
